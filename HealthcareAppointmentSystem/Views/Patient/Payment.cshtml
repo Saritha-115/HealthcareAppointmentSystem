@@ -1,0 +1,86 @@
+﻿@model HealthcareAppointmentSystem.Models.Appointment
+
+@{
+    ViewData["Title"] = "Payment";
+}
+
+<div class="container mt-4 mb-5">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h4><i class="bi bi-credit-card"></i> Payment</h4>
+                </div>
+                <div class="card-body p-4">
+
+                    <!-- Appointment Summary -->
+                    <div class="alert alert-info">
+                        <h5><i class="bi bi-info-circle"></i> Appointment Summary</h5>
+                        <p><strong>Doctor:</strong> @Model.DoctorName</p>
+                        <p><strong>Specialty:</strong> @Model.Specialty</p>
+                        <p><strong>Date:</strong> @Model.AppointmentDate.ToString("dd MMMM yyyy")</p>
+                        <p><strong>Time:</strong> @Model.AppointmentTime</p>
+                        <p class="mb-0"><strong>Consultation Fee:</strong> <span class="h5 text-success">LKR @Model.ConsultationFee.ToString("N2")</span></p>
+                    </div>
+
+                    <form method="post" asp-action="ProcessPayment" asp-route-id="@Model.Id">
+
+                        <div class="mb-4">
+                            <label class="form-label"><i class="bi bi-wallet2"></i> Payment Method <span class="text-danger">*</span></label>
+                            <select name="paymentMethod" class="form-control" required>
+                                <option value="">Select Payment Method</option>
+                                <option value="Credit Card">Credit Card</option>
+                                <option value="Debit Card">Debit Card</option>
+                                <option value="Online Banking">Online Banking</option>
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label"><i class="bi bi-credit-card"></i> Card Number <span class="text-danger">*</span></label>
+                            <input type="text" name="cardNumber" class="form-control"
+                                   placeholder="1234 5678 9012 3456"
+                                   maxlength="19" required />
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Expiry Date <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" placeholder="MM/YY"
+                                       maxlength="5" required />
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">CVV <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" placeholder="123"
+                                       maxlength="3" required />
+                            </div>
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label">Cardholder Name <span class="text-danger">*</span></label>
+                            <input type="text" name="cardName" class="form-control"
+                                   placeholder="Name on card" required />
+                        </div>
+
+                        <div class="alert alert-warning">
+                            <i class="bi bi-shield-check"></i>
+                            <strong>Secure Payment:</strong> Your payment information is encrypted and secure.
+                        </div>
+
+                        <div class="d-grid gap-2 mt-4">
+                            <button type="submit" class="btn btn-success btn-lg">
+                                <i class="bi bi-credit-card"></i> Pay LKR @Model.ConsultationFee.ToString("N2")
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="text-center mt-3">
+                <small class="text-muted">
+                    <i class="bi bi-lock"></i> This is a secure SSL encrypted payment
+                </small>
+            </div>
+        </div>
+    </div>
+</div>

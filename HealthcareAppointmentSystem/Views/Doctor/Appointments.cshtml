@@ -1,0 +1,127 @@
+﻿@model List<HealthcareAppointmentSystem.Models.Appointment>
+
+@{
+    ViewData["Title"] = "My Appointments";
+}
+
+<div class="container-fluid mt-4">
+    <div class="row mb-4">
+        <div class="col">
+            <h2><i class="bi bi-calendar-check"></i> My Appointments</h2>
+        </div>
+    </div>
+
+    <!-- Filter Buttons -->
+    <div class="row mb-4">
+        <div class="col">
+            <div class="btn-group" role="group">
+                <a href="@Url.Action("Appointments", new { status = "All" })"
+                   class="btn @(ViewBag.StatusFilter == "All" ? "btn-primary" : "btn-outline-primary")">
+                    All (@Model.Count)
+                </a>
+                <a href="@Url.Action("Appointments", new { status = "Pending" })"
+                   class="btn @(ViewBag.StatusFilter == "Pending" ? "btn-warning" : "btn-outline-warning")">
+                    Pending (@Model.Count(a => a.Status == "Pending"))
+                </a>
+                <a href="@Url.Action("Appointments", new { status = "Confirmed" })"
+                   class="btn @(ViewBag.StatusFilter == "Confirmed" ? "btn-info" : "btn-outline-info")">
+                    Confirmed (@Model.Count(a => a.Status == "Confirmed"))
+                </a>
+                <a href="@Url.Action("Appointments", new { status = "Completed" })"
+                   class="btn @(ViewBag.StatusFilter == "Completed" ? "btn-success" : "btn-outline-success")">
+                    Completed (@Model.Count(a => a.Status == "Completed"))
+                </a>
+                <a href="@Url.Action("Appointments", new { status = "Cancelled" })"
+                   class="btn @(ViewBag.StatusFilter == "Cancelled" ? "btn-danger" : "btn-outline-danger")">
+                    Cancelled (@Model.Count(a => a.Status == "Cancelled"))
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Appointments List -->
+    <div class="card shadow">
+        <div class="card-body">
+            @if (Model.Count == 0)
+            {
+                <div class="text-center py-5">
+                    <i class="bi bi-calendar-x" style="font-size: 4rem; color: #ccc;"></i>
+                    <p class="text-muted mt-3">No appointments found for the selected filter.</p>
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Date & Time</th>
+                                <th>Patient</th>
+                                <th>Status</th>
+                                <th>Payment</th>
+                                <th>Fee</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var appointment in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <strong>@appointment.AppointmentDate.ToString("dd MMM yyyy")</strong><br>
+                                        <small class="text-muted">@appointment.AppointmentTime</small>
+                                    </td>
+                                    <td>@appointment.PatientName</td>
+                                    <td>
+                                        @switch (appointment.Status)
+                                        {
+                                            case "Pending":
+                                                <span class="badge bg-warning">Pending</span>
+                                                break;
+                                            case "Confirmed":
+                                                <span class="badge bg-info">Confirmed</span>
+                                                break;
+                                            case "Completed":
+                                                <span class="badge bg-success">Completed</span>
+                                                break;
+                                            case "Cancelled":
+                                                <span class="badge bg-danger">Cancelled</span>
+                                                break;
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (appointment.IsPaid)
+                                        {
+                                            <span class="badge bg-success"><i class="bi bi-check-circle"></i> Paid</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-warning">Unpaid</span>
+                                        }
+                                    </td>
+                                    <td>LKR @appointment.ConsultationFee.ToString("N2")</td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm">
+                                            <a href="@Url.Action("AppointmentDetails", new { id = appointment.Id })"
+                                               class="btn btn-outline-primary" title="View Details">
+                                                <i class="bi bi-eye"></i>
+                                            </a>
+                                            @if (appointment.Status == "Pending")
+                                            {
+                                                <form method="post" asp-action="ConfirmAppointment" asp-route-id="@appointment.Id" class="d-inline">
+                                                    <button type="submit" class="btn btn-outline-success" title="Confirm">
+                                                        <i class="bi bi-check"></i>
+                                                    </button>
+                                                </form>
+                                            }
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>

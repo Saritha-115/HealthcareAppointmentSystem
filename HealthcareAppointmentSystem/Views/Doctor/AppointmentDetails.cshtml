@@ -1,0 +1,178 @@
+﻿@model HealthcareAppointmentSystem.Models.Appointment
+
+@{
+    ViewData["Title"] = "Appointment Details";
+}
+
+<div class="container mt-4 mb-5">
+    <div class="row">
+        <div class="col-md-10 mx-auto">
+            <!-- Appointment Info Card -->
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h4><i class="bi bi-calendar-event"></i> Appointment Details</h4>
+                </div>
+                <div class="card-body p-4">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <h6 class="text-muted">Patient Name</h6>
+                            <p class="h5">@Model.PatientName</p>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <h6 class="text-muted">Status</h6>
+                            <p>
+                                @switch (Model.Status)
+                                {
+                                    case "Pending":
+                                        <span class="badge bg-warning fs-6">Pending</span>
+                                        break;
+                                    case "Confirmed":
+                                        <span class="badge bg-info fs-6">Confirmed</span>
+                                        break;
+                                    case "Completed":
+                                        <span class="badge bg-success fs-6">Completed</span>
+                                        break;
+                                    case "Cancelled":
+                                        <span class="badge bg-danger fs-6">Cancelled</span>
+                                        break;
+                                }
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <h6 class="text-muted">Appointment Date</h6>
+                            <p class="h5">@Model.AppointmentDate.ToString("dddd, dd MMMM yyyy")</p>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <h6 class="text-muted">Appointment Time</h6>
+                            <p class="h5">@Model.AppointmentTime</p>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <h6 class="text-muted">Consultation Fee</h6>
+                            <p class="h5">LKR @Model.ConsultationFee.ToString("N2")</p>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <h6 class="text-muted">Payment Status</h6>
+                            <p>
+                                @if (Model.IsPaid)
+                                {
+                                    <span class="badge bg-success fs-6"><i class="bi bi-check-circle"></i> Paid</span>
+                                    <br><small class="text-muted">@Model.PaymentDate?.ToString("dd MMM yyyy")</small>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-warning fs-6">Unpaid</span>
+                                }
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12 mb-3">
+                            <h6 class="text-muted">Booked On</h6>
+                            <p>@Model.CreatedAt.ToString("dd MMMM yyyy, hh:mm tt")</p>
+                        </div>
+                    </div>
+
+                    <!-- Action Buttons -->
+                    @if (Model.Status == "Pending")
+                    {
+                        <div class="d-flex gap-2 mt-4">
+                            <form method="post" asp-action="ConfirmAppointment" asp-route-id="@Model.Id" class="flex-fill">
+                                <button type="submit" class="btn btn-success w-100">
+                                    <i class="bi bi-check-circle"></i> Confirm Appointment
+                                </button>
+                            </form>
+                            <button type="button" class="btn btn-danger flex-fill" data-bs-toggle="modal" data-bs-target="#cancelModal">
+                                <i class="bi bi-x-circle"></i> Cancel Appointment
+                            </button>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            <!-- Consultation Notes Card -->
+            @if (Model.Status == "Confirmed" || Model.Status == "Completed")
+            {
+                <div class="card shadow mt-4">
+                    <div class="card-header bg-white">
+                        <h5 class="mb-0"><i class="bi bi-file-medical"></i> Consultation Notes</h5>
+                    </div>
+                    <div class="card-body">
+                        <form method="post" asp-action="UpdateConsultation" asp-route-id="@Model.Id">
+                            <div class="mb-3">
+                                <label class="form-label">Consultation Notes</label>
+                                <textarea name="consultationNotes" class="form-control" rows="5" placeholder="Enter patient symptoms, diagnosis, and treatment...">@Model.ConsultationNotes</textarea>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Prescription</label>
+                                <textarea name="prescription" class="form-control" rows="4" placeholder="Enter prescribed medications and dosage...">@Model.Prescription</textarea>
+                            </div>
+
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-save"></i> Save & Mark as Completed
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            }
+
+            @if (Model.Status == "Completed" && !string.IsNullOrEmpty(Model.ConsultationNotes))
+            {
+                <div class="card shadow mt-4">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0"><i class="bi bi-check-circle"></i> Consultation Summary</h5>
+                    </div>
+                    <div class="card-body">
+                        <h6 class="text-muted">Consultation Notes:</h6>
+                        <p>@Model.ConsultationNotes</p>
+
+                        @if (!string.IsNullOrEmpty(Model.Prescription))
+                        {
+                            <hr>
+                            <h6 class="text-muted">Prescription:</h6>
+                            <p>@Model.Prescription</p>
+                        }
+                    </div>
+                </div>
+            }
+
+            <div class="mt-4">
+                <a href="@Url.Action("Appointments")" class="btn btn-secondary">
+                    <i class="bi bi-arrow-left"></i> Back to Appointments
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Cancel Modal -->
+<div class="modal fade" id="cancelModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Cancel Appointment</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form method="post" asp-action="CancelAppointment" asp-route-id="@Model.Id">
+                <div class="modal-body">
+                    <p>Are you sure you want to cancel this appointment?</p>
+                    <div class="mb-3">
+                        <label class="form-label">Reason for Cancellation</label>
+                        <textarea name="reason" class="form-control" rows="3" required placeholder="Please provide a reason..."></textarea>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-danger">Cancel Appointment</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

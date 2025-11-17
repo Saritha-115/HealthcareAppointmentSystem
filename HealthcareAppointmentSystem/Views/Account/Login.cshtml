@@ -1,0 +1,44 @@
+﻿@{
+    ViewData["Title"] = "Login";
+}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header bg-primary text-white">
+                    <h4>Login - @ViewBag.UserType</h4>
+                </div>
+                <div class="card-body">
+                    <form method="post" asp-action="Login">
+                        <input type="hidden" name="userType" value="@ViewBag.UserType" />
+
+                        @if (!string.IsNullOrEmpty(ViewBag.ErrorMessage))
+                        {
+                            <div class="alert alert-danger">@ViewBag.ErrorMessage</div>
+                        }
+
+                        <div class="mb-3">
+                            <label class="form-label">Email</label>
+                            <input type="email" name="email" class="form-control" required />
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Password</label>
+                            <input type="password" name="password" class="form-control" required />
+                        </div>
+
+                        <button type="submit" class="btn btn-primary w-100">Login</button>
+                    </form>
+
+                    @if (ViewBag.UserType == "patient")
+                    {
+                        <div class="mt-3 text-center">
+                            <a href="@Url.Action("RegisterPatient", "Account")">Don't have an account? Register</a>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

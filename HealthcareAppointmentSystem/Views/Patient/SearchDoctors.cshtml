@@ -1,0 +1,121 @@
+﻿@model List<HealthcareAppointmentSystem.Models.Doctor>
+
+@{
+    ViewData["Title"] = "Search Doctors";
+}
+
+<div class="container mt-4 mb-5">
+    <div class="row mb-4">
+        <div class="col">
+            <h2><i class="bi bi-search"></i> Find a Doctor</h2>
+            <p class="text-muted">Search for doctors by specialty or location</p>
+        </div>
+    </div>
+
+    <!-- Search Form -->
+    <div class="card shadow mb-4">
+        <div class="card-body p-4">
+            <form method="get" asp-action="SearchDoctors">
+                <div class="row">
+                    <div class="col-md-5 mb-3">
+                        <label class="form-label"><i class="bi bi-bookmark"></i> Specialty</label>
+                        <select name="specialty" class="form-control form-control-lg">
+                            <option value="">All Specialties</option>
+                            @if (ViewBag.Specialties != null)
+                            {
+                                foreach (var specialty in ViewBag.Specialties)
+                                {
+                                    <option value="@specialty" selected="@(specialty == ViewBag.SelectedSpecialty)">@specialty</option>
+                                }
+                            }
+                        </select>
+                    </div>
+
+                    <div class="col-md-5 mb-3">
+                        <label class="form-label"><i class="bi bi-geo-alt"></i> Location</label>
+                        <input type="text" name="location" class="form-control form-control-lg"
+                               placeholder="Enter city or area" value="@ViewBag.SelectedLocation" />
+                    </div>
+
+                    <div class="col-md-2 mb-3">
+                        <label class="form-label">&nbsp;</label>
+                        <button type="submit" class="btn btn-primary btn-lg w-100">
+                            <i class="bi bi-search"></i> Search
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Results -->
+    <div class="row">
+        <div class="col">
+            <h5 class="mb-3">
+                @if (Model.Count > 0)
+                {
+                    <span>Found @Model.Count doctor(s)</span>
+                }
+                else
+                {
+                    <span>No doctors found</span>
+                }
+            </h5>
+        </div>
+    </div>
+
+    @if (Model.Count == 0)
+    {
+        <div class="text-center py-5">
+            <i class="bi bi-search" style="font-size: 4rem; color: #ccc;"></i>
+            <p class="text-muted mt-3">No doctors found matching your criteria. Try different filters.</p>
+        </div>
+    }
+    else
+    {
+        <div class="row">
+            @foreach (var doctor in Model)
+            {
+                <div class="col-md-6 mb-4">
+                    <div class="card shadow h-100">
+                        <div class="card-body">
+                            <div class="d-flex align-items-start">
+                                <div class="flex-shrink-0">
+                                    <i class="bi bi-person-circle" style="font-size: 4rem; color: #667eea;"></i>
+                                </div>
+                                <div class="flex-grow-1 ms-3">
+                                    <h5 class="card-title mb-1">@doctor.FullName</h5>
+                                    <p class="text-muted mb-2">@doctor.Qualification</p>
+
+                                    <div class="mb-2">
+                                        <span class="badge bg-primary">@doctor.Specialty</span>
+                                    </div>
+
+                                    <p class="mb-1">
+                                        <i class="bi bi-geo-alt text-muted"></i> @doctor.Location
+                                    </p>
+                                    <p class="mb-1">
+                                        <i class="bi bi-telephone text-muted"></i> @doctor.PhoneNumber
+                                    </p>
+                                    <p class="mb-3">
+                                        <i class="bi bi-currency-dollar text-muted"></i>
+                                        <strong>LKR @doctor.ConsultationFee.ToString("N2")</strong>
+                                    </p>
+
+                                    <div class="d-flex gap-2">
+                                        <a href="@Url.Action("DoctorDetails", new { id = doctor.Id })" class="btn btn-outline-primary btn-sm">
+                                            <i class="bi bi-eye"></i> View Details
+                                        </a>
+                                        <a href="@Url.Action("BookAppointment", new { doctorId = doctor.Id })" class="btn btn-primary btn-sm">
+                                            <i class="bi bi-calendar-plus"></i> Book Appointment
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>

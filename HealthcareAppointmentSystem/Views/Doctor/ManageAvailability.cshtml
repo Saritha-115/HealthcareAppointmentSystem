@@ -1,0 +1,128 @@
+﻿@model HealthcareAppointmentSystem.Models.Doctor
+
+@{
+    ViewData["Title"] = "Manage Availability";
+    var daysOfWeek = new[] { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
+}
+
+<div class="container mt-4 mb-5">
+    <div class="row">
+        <div class="col-md-10 mx-auto">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h4><i class="bi bi-clock"></i> Manage Availability Schedule</h4>
+                    <p class="mb-0">Set your working hours for each day of the week</p>
+                </div>
+                <div class="card-body p-4">
+                    <form method="post" asp-action="SaveAvailability">
+
+                        <div class="alert alert-info">
+                            <i class="bi bi-info-circle"></i>
+                            <strong>Note:</strong> Your availability schedule will be visible to patients when they book appointments.
+                        </div>
+
+                        @for (int i = 0; i < daysOfWeek.Length; i++)
+                        {
+                            var day = daysOfWeek[i];
+                            var existingSchedule = Model.AvailabilitySchedule?.FirstOrDefault(a => a.DayOfWeek == day);
+                            var isAvailable = existingSchedule?.IsAvailable ?? false;
+                            var startTime = existingSchedule?.StartTime ?? "09:00";
+                            var endTime = existingSchedule?.EndTime ?? "17:00";
+
+                            <div class="card mb-3">
+                                <div class="card-body">
+                                    <div class="row align-items-center">
+                                        <div class="col-md-3">
+                                            <div class="form-check">
+                                                <input type="checkbox"
+                                                       class="form-check-input availability-checkbox"
+                                                       name="availabilitySchedule[@i].IsAvailable"
+                                                       value="true"
+                                                       id="available_@day"
+                                                       @(isAvailable ? "checked" : "")
+                                                       onchange="toggleTimeInputs('@day')" />
+                                                <input type="hidden"
+                                                       name="availabilitySchedule[@i].IsAvailable"
+                                                       value="false" />
+                                                <label class="form-check-label fw-bold" for="available_@day">
+                                                    @day
+                                                </label>
+                                            </div>
+                                            <input type="hidden" name="availabilitySchedule[@i].DayOfWeek" value="@day" />
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <label class="form-label small">Start Time</label>
+                                            <input type="time"
+                                                   class="form-control time-input-@day"
+                                                   name="availabilitySchedule[@i].StartTime"
+                                                   value="@startTime"
+                                                   @(!isAvailable ? "disabled" : "") />
+                                        </div>
+
+                                        <div class="col-md-1 text-center">
+                                            <i class="bi bi-arrow-right"></i>
+                                        </div>
+
+                                        <div class="col-md-4">
+                                            <label class="form-label small">End Time</label>
+                                            <input type="time"
+                                                   class="form-control time-input-@day"
+                                                   name="availabilitySchedule[@i].EndTime"
+                                                   value="@endTime"
+                                                   @(!isAvailable ? "disabled" : "") />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+
+                        <div class="d-grid gap-2 mt-4">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="bi bi-save"></i> Save Availability Schedule
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <!-- Preview Card -->
+            <div class="card shadow mt-4">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0"><i class="bi bi-eye"></i> Current Schedule Preview</h5>
+                </div>
+                <div class="card-body">
+                    @if (Model.AvailabilitySchedule == null || !Model.AvailabilitySchedule.Any(a => a.IsAvailable))
+                    {
+                        <p class="text-muted">No availability schedule set yet.</p>
+                    }
+                    else
+                    {
+                        <ul class="list-unstyled">
+                            @foreach (var schedule in Model.AvailabilitySchedule.Where(a => a.IsAvailable).OrderBy(a => Array.IndexOf(daysOfWeek, a.DayOfWeek)))
+                            {
+                                <li class="mb-2">
+                                    <i class="bi bi-check-circle text-success"></i>
+                                    <strong>@schedule.DayOfWeek:</strong> @schedule.StartTime - @schedule.EndTime
+                                </li>
+                            }
+                        </ul>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function toggleTimeInputs(day) {
+            var checkbox = document.getElementById('available_' + day);
+            var timeInputs = document.querySelectorAll('.time-input-' + day);
+
+            timeInputs.forEach(function(input) {
+                input.disabled = !checkbox.checked;
+            });
+        }
+    </script>
+}

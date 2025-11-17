@@ -1,0 +1,140 @@
+﻿@model List<HealthcareAppointmentSystem.Models.Appointment>
+
+@{
+    ViewData["Title"] = "My Appointments";
+}
+
+<div class="container-fluid mt-4">
+    <div class="row mb-4">
+        <div class="col">
+            <h2><i class="bi bi-calendar-event"></i> My Appointments</h2>
+        </div>
+    </div>
+
+    <!-- Filter Buttons -->
+    <div class="row mb-4">
+        <div class="col">
+            <div class="btn-group" role="group">
+                <a href="@Url.Action("MyAppointments", new { status = "All" })"
+                   class="btn @(ViewBag.StatusFilter == "All" ? "btn-primary" : "btn-outline-primary")">
+                    All (@Model.Count)
+                </a>
+                <a href="@Url.Action("MyAppointments", new { status = "Pending" })"
+                   class="btn @(ViewBag.StatusFilter == "Pending" ? "btn-warning" : "btn-outline-warning")">
+                    Pending (@Model.Count(a => a.Status == "Pending"))
+                </a>
+                <a href="@Url.Action("MyAppointments", new { status = "Confirmed" })"
+                   class="btn @(ViewBag.StatusFilter == "Confirmed" ? "btn-info" : "btn-outline-info")">
+                    Confirmed (@Model.Count(a => a.Status == "Confirmed"))
+                </a>
+                <a href="@Url.Action("MyAppointments", new { status = "Completed" })"
+                   class="btn @(ViewBag.StatusFilter == "Completed" ? "btn-success" : "btn-outline-success")">
+                    Completed (@Model.Count(a => a.Status == "Completed"))
+                </a>
+                <a href="@Url.Action("MyAppointments", new { status = "Cancelled" })"
+                   class="btn @(ViewBag.StatusFilter == "Cancelled" ? "btn-danger" : "btn-outline-danger")">
+                    Cancelled (@Model.Count(a => a.Status == "Cancelled"))
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Appointments List -->
+    <div class="card shadow">
+        <div class="card-body">
+            @if (Model.Count == 0)
+            {
+                <div class="text-center py-5">
+                    <i class="bi bi-calendar-x" style="font-size: 4rem; color: #ccc;"></i>
+                    <p class="text-muted mt-3">No appointments found.</p>
+                    <a href="@Url.Action("SearchDoctors")" class="btn btn-primary">
+                        <i class="bi bi-search"></i> Find a Doctor
+                    </a>
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Date & Time</th>
+                                <th>Doctor</th>
+                                <th>Specialty</th>
+                                <th>Status</th>
+                                <th>Payment</th>
+                                <th>Fee</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var appointment in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <strong>@appointment.AppointmentDate.ToString("dd MMM yyyy")</strong><br>
+                                        <small class="text-muted">@appointment.AppointmentTime</small>
+                                    </td>
+                                    <td>@appointment.DoctorName</td>
+                                    <td><span class="badge bg-primary">@appointment.Specialty</span></td>
+                                    <td>
+                                        @switch (appointment.Status)
+                                        {
+                                            case "Pending":
+                                                <span class="badge bg-warning">Pending</span>
+                                                break;
+                                            case "Confirmed":
+                                                <span class="badge bg-info">Confirmed</span>
+                                                break;
+                                            case "Completed":
+                                                <span class="badge bg-success">Completed</span>
+                                                break;
+                                            case "Cancelled":
+                                                <span class="badge bg-danger">Cancelled</span>
+                                                break;
+                                        }
+                                    </td>
+                                    <td>
+                                        @if (appointment.IsPaid)
+                                        {
+                                            <span class="badge bg-success"><i class="bi bi-check-circle"></i> Paid</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-warning">Unpaid</span>
+                                        }
+                                    </td>
+                                    <td>LKR @appointment.ConsultationFee.ToString("N2")</td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm">
+                                            <a href="@Url.Action("AppointmentDetails", new { id = appointment.Id })"
+                                               class="btn btn-outline-primary" title="View">
+                                                <i class="bi bi-eye"></i>
+                                            </a>
+                                            @if (appointment.Status == "Completed")
+                                            {
+                                                <a href="@Url.Action("LeaveFeedback", new { appointmentId = appointment.Id })"
+                                                   class="btn btn-outline-warning" title="Feedback">
+                                                    <i class="bi bi-star"></i>
+                                                </a>
+                                            }
+                                            @if (appointment.Status != "Cancelled" && appointment.Status != "Completed")
+                                            {
+                                                <form method="post" asp-action="CancelAppointment" asp-route-id="@appointment.Id"
+                                                      class="d-inline" onsubmit="return confirm('Are you sure you want to cancel this appointment?');">
+                                                    <button type="submit" class="btn btn-outline-danger btn-sm" title="Cancel">
+                                                        <i class="bi bi-x-circle"></i>
+                                                    </button>
+                                                </form>
+                                            }
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>

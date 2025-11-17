@@ -1,0 +1,129 @@
+﻿@model HealthcareAppointmentSystem.Models.Appointment
+
+@{
+    ViewData["Title"] = "Appointment Details";
+}
+
+<div class="container mt-4 mb-5">
+    <div class="row">
+        <div class="col-md-8 mx-auto">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h4><i class="bi bi-calendar-event"></i> Appointment Details</h4>
+                </div>
+                <div class="card-body p-4">
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <h6 class="text-muted">Doctor</h6>
+                            <p class="h5">@Model.DoctorName</p>
+                            <span class="badge bg-primary">@Model.Specialty</span>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <h6 class="text-muted">Status</h6>
+                            <p>
+                                @switch (Model.Status)
+                                {
+                                    case "Pending":
+                                        <span class="badge bg-warning fs-6">Pending Confirmation</span>
+                                        break;
+                                    case "Confirmed":
+                                        <span class="badge bg-success fs-6">Confirmed</span>
+                                        break;
+                                    case "Completed":
+                                        <span class="badge bg-info fs-6">Completed</span>
+                                        break;
+                                    case "Cancelled":
+                                        <span class="badge bg-danger fs-6">Cancelled</span>
+                                        break;
+                                }
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <h6 class="text-muted">Date</h6>
+                            <p class="h5">@Model.AppointmentDate.ToString("dddd, dd MMMM yyyy")</p>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <h6 class="text-muted">Time</h6>
+                            <p class="h5">@Model.AppointmentTime</p>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <h6 class="text-muted">Consultation Fee</h6>
+                            <p class="h5">LKR @Model.ConsultationFee.ToString("N2")</p>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <h6 class="text-muted">Payment Status</h6>
+                            <p>
+                                @if (Model.IsPaid)
+                                {
+                                    <span class="badge bg-success fs-6"><i class="bi bi-check-circle"></i> Paid</span>
+                                    <br>
+
+                                    <small class="text-muted">on @Model.PaymentDate?.ToString("dd MMM yyyy")</small>
+                                }
+                                else
+                                {
+                                    <span class="badge bg-warning fs-6">Unpaid</span>
+                                }
+                            </p>
+                        </div>
+                    </div>
+
+                    @if (Model.Status != "Cancelled" && Model.Status != "Completed" && Model.AppointmentDate >= DateTime.Today)
+                    {
+                        <div class="alert alert-info">
+                            <i class="bi bi-info-circle"></i>
+                            Please arrive 10 minutes before your scheduled time.
+                        </div>
+                    }
+
+                    @if (Model.Status != "Cancelled" && Model.Status != "Completed")
+                    {
+                        <div class="d-grid gap-2 mt-4">
+                            <form method="post" asp-action="CancelAppointment" asp-route-id="@Model.Id"
+                                  onsubmit="return confirm('Are you sure you want to cancel this appointment?');">
+                                <button type="submit" class="btn btn-danger w-100">
+                                    <i class="bi bi-x-circle"></i> Cancel Appointment
+                                </button>
+                            </form>
+                        </div>
+                    }
+                </div>
+            </div>
+
+            @if (Model.Status == "Completed" && (!string.IsNullOrEmpty(Model.ConsultationNotes) || !string.IsNullOrEmpty(Model.Prescription)))
+            {
+                <div class="card shadow mt-4">
+                    <div class="card-header bg-success text-white">
+                        <h5 class="mb-0"><i class="bi bi-file-medical"></i> Medical Record</h5>
+                    </div>
+                    <div class="card-body">
+                        @if (!string.IsNullOrEmpty(Model.ConsultationNotes))
+                        {
+                            <h6 class="text-muted">Consultation Notes:</h6>
+                            <p>@Model.ConsultationNotes</p>
+                        }
+
+                        @if (!string.IsNullOrEmpty(Model.Prescription))
+                        {
+                            <hr>
+                            <h6 class="text-muted">Prescription:</h6>
+                            <p>@Model.Prescription</p>
+                        }
+                    </div>
+                </div>
+            }
+
+            <div class="mt-4">
+                <a href="@Url.Action("MyAppointments")" class="btn btn-secondary">
+                    <i class="bi bi-arrow-left"></i> Back to My Appointments
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,113 @@
+﻿@model List<HealthcareAppointmentSystem.Models.Doctor>
+
+@{
+    ViewData["Title"] = "Manage Doctors";
+}
+
+<div class="container-fluid mt-4">
+    <div class="row mb-4">
+        <div class="col">
+            <h2><i class="bi bi-person-badge"></i> Manage Doctors</h2>
+            <nav aria-label="breadcrumb">
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="@Url.Action("Dashboard")">Dashboard</a></li>
+                    <li class="breadcrumb-item active">Manage Doctors</li>
+                </ol>
+            </nav>
+        </div>
+        <div class="col text-end">
+            <a href="@Url.Action("AddDoctor")" class="btn btn-primary">
+                <i class="bi bi-plus-circle"></i> Add New Doctor
+            </a>
+        </div>
+    </div>
+
+    <div class="card shadow">
+        <div class="card-header bg-white">
+            <h5 class="mb-0">All Doctors (@Model.Count)</h5>
+        </div>
+        <div class="card-body">
+            @if (Model.Count == 0)
+            {
+                <div class="text-center py-5">
+                    <i class="bi bi-inbox" style="font-size: 4rem; color: #ccc;"></i>
+                    <p class="text-muted mt-3">No doctors found. Add your first doctor!</p>
+                    <a href="@Url.Action("AddDoctor")" class="btn btn-primary">
+                        <i class="bi bi-plus-circle"></i> Add Doctor
+                    </a>
+                </div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Name</th>
+                                <th>Email</th>
+                                <th>Specialty</th>
+                                <th>Location</th>
+                                <th>Consultation Fee</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var doctor in Model)
+                            {
+                                <tr>
+                                    <td>
+                                        <strong>@doctor.FullName</strong><br>
+                                        <small class="text-muted">@doctor.Qualification</small>
+                                    </td>
+                                    <td>@doctor.Email</td>
+                                    <td><span class="badge bg-primary">@doctor.Specialty</span></td>
+                                    <td>@doctor.Location</td>
+                                    <td>LKR @doctor.ConsultationFee.ToString("N2")</td>
+                                    <td>
+                                        @if (doctor.IsActive)
+                                        {
+                                            <span class="badge bg-success">Active</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-secondary">Inactive</span>
+                                        }
+                                    </td>
+                                    <td>
+                                        <div class="btn-group btn-group-sm">
+                                            <a href="@Url.Action("EditDoctor", new { id = doctor.Id })"
+                                               class="btn btn-outline-primary" title="Edit">
+                                                <i class="bi bi-pencil"></i>
+                                            </a>
+                                            <button type="button" class="btn btn-outline-danger"
+                                                    onclick="confirmDelete('@doctor.Id', '@doctor.FullName')" title="Delete">
+                                                <i class="bi bi-trash"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Form (Hidden) -->
+<form id="deleteForm" method="post" asp-action="DeleteDoctor" style="display:none;">
+    <input type="hidden" name="id" id="deleteId" />
+</form>
+
+@section Scripts {
+    <script>
+        function confirmDelete(doctorId, doctorName) {
+            if (confirm('Are you sure you want to delete Dr. ' + doctorName + '?')) {
+                document.getElementById('deleteId').value = doctorId;
+                document.getElementById('deleteForm').submit();
+            }
+        }
+    </script>
+}
