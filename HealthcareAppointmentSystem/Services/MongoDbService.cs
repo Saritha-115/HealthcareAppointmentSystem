@@ -1,9 +1,11 @@
-﻿using MongoDB.Driver;
+﻿using HealthcareAppointmentSystem.Models;
 using Microsoft.Extensions.Configuration;
-using HealthcareAppointmentSystem.Models;
+using MongoDB.Driver;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Metrics;
 using System.Threading.Tasks;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace HealthcareAppointmentSystem.Services
 {
@@ -24,11 +26,24 @@ namespace HealthcareAppointmentSystem.Services
 
         public MongoDbService(IConfiguration configuration)
         {
-            var connectionString = configuration.GetConnectionString("MongoDbConnection");
-            var databaseName = configuration.GetConnectionString("DatabaseName");
+            try
+            {
+                var connectionString = configuration.GetConnectionString("MongoDbConnection");
+                var databaseName = configuration.GetConnectionString("DatabaseName");
 
-            var client = new MongoClient(connectionString);
-            _database = client.GetDatabase(databaseName);
+                Console.WriteLine($"Connecting to MongoDB: {connectionString}");
+                Console.WriteLine($"Database: {databaseName}");
+
+                var client = new MongoClient(connectionString);
+                _database = client.GetDatabase(databaseName);
+
+                Console.WriteLine("MongoDB connection established successfully!");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"MongoDB connection error: {ex.Message}");
+                throw;
+            }
         }
 
         public IMongoCollection<Admin> Admins =>
@@ -74,44 +89,111 @@ namespace HealthcareAppointmentSystem.Services
 
         public async Task<List<Doctor>> GetAllDoctorsAsync()
         {
-            return await _doctors.Find(d => d.IsActive).ToListAsync();
+            try
+            {
+                return await _doctors.Find(d => d.IsActive).ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error getting doctors: {ex.Message}");
+                return new List<Doctor>();
+            }
         }
 
         public async Task<Doctor> GetDoctorByIdAsync(string id)
         {
-            return await _doctors.Find(d => d.Id == id).FirstOrDefaultAsync();
+            try
+            {
+                return await _doctors.Find(d => d.Id == id).FirstOrDefaultAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error getting doctor by id: {ex.Message}");
+                return null;
+            }
         }
 
         public async Task<Doctor> GetDoctorByEmailAsync(string email)
         {
-            return await _doctors.Find(d => d.Email == email).FirstOrDefaultAsync();
+            try
+            {
+                return await _doctors.Find(d => d.Email == email).FirstOrDefaultAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error getting doctor by email: {ex.Message}");
+                return null;
+            }
         }
 
         public async Task<List<Doctor>> GetDoctorsBySpecialtyAsync(string specialty)
         {
-            return await _doctors.Find(d => d.Specialty == specialty && d.IsActive).ToListAsync();
+            try
+            {
+                return await _doctors.Find(d => d.Specialty == specialty && d.IsActive).ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error getting doctors by specialty: {ex.Message}");
+                return new List<Doctor>();
+            }
         }
 
         public async Task CreateDoctorAsync(Doctor doctor)
         {
-            await _doctors.InsertOneAsync(doctor);
+            try
+            {
+                await _doctors.InsertOneAsync(doctor);
+                Console.WriteLine($"Doctor created: {doctor.Email}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error creating doctor: {ex.Message}");
+                throw;
+            }
         }
 
         public async Task UpdateDoctorAsync(string id, Doctor doctor)
         {
-            await _doctors.ReplaceOneAsync(d => d.Id == id, doctor);
+            try
+            {
+                await _doctors.ReplaceOneAsync(d => d.Id == id, doctor);
+                Console.WriteLine($"Doctor updated: {id}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error updating doctor: {ex.Message}");
+                throw;
+            }
         }
 
         public async Task DeleteDoctorAsync(string id)
         {
-            var filter = Builders<Doctor>.Filter.Eq(d => d.Id, id);
-            var update = Builders<Doctor>.Update.Set(d => d.IsActive, false);
-            await _doctors.UpdateOneAsync(filter, update);
+            try
+            {
+                var filter = Builders<Doctor>.Filter.Eq(d => d.Id, id);
+                var update = Builders<Doctor>.Update.Set(d => d.IsActive, false);
+                await _doctors.UpdateOneAsync(filter, update);
+                Console.WriteLine($"Doctor deleted: {id}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error deleting doctor: {ex.Message}");
+                throw;
+            }
         }
 
         public async Task<List<string>> GetAllSpecialtiesAsync()
         {
-            return await _doctors.Distinct(d => d.Specialty, d => d.IsActive).ToListAsync();
+            try
+            {
+                return await _doctors.Distinct(d => d.Specialty, d => d.IsActive).ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error getting specialties: {ex.Message}");
+                return new List<string>();
+            }
         }
     }
 
@@ -136,27 +218,69 @@ namespace HealthcareAppointmentSystem.Services
 
         public async Task<List<Patient>> GetAllPatientsAsync()
         {
-            return await _patients.Find(_ => true).ToListAsync();
+            try
+            {
+                return await _patients.Find(_ => true).ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error getting patients: {ex.Message}");
+                return new List<Patient>();
+            }
         }
 
         public async Task<Patient> GetPatientByIdAsync(string id)
         {
-            return await _patients.Find(p => p.Id == id).FirstOrDefaultAsync();
+            try
+            {
+                return await _patients.Find(p => p.Id == id).FirstOrDefaultAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error getting patient by id: {ex.Message}");
+                return null;
+            }
         }
 
         public async Task<Patient> GetPatientByEmailAsync(string email)
         {
-            return await _patients.Find(p => p.Email == email).FirstOrDefaultAsync();
+            try
+            {
+                return await _patients.Find(p => p.Email == email).FirstOrDefaultAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error getting patient by email: {ex.Message}");
+                return null;
+            }
         }
 
         public async Task CreatePatientAsync(Patient patient)
         {
-            await _patients.InsertOneAsync(patient);
+            try
+            {
+                await _patients.InsertOneAsync(patient);
+                Console.WriteLine($"Patient created: {patient.Email}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error creating patient: {ex.Message}");
+                throw;
+            }
         }
 
         public async Task UpdatePatientAsync(string id, Patient patient)
         {
-            await _patients.ReplaceOneAsync(p => p.Id == id, patient);
+            try
+            {
+                await _patients.ReplaceOneAsync(p => p.Id == id, patient);
+                Console.WriteLine($"Patient updated: {id}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error updating patient: {ex.Message}");
+                throw;
+            }
         }
     }
 
@@ -183,44 +307,103 @@ namespace HealthcareAppointmentSystem.Services
 
         public async Task<List<Appointment>> GetAllAppointmentsAsync()
         {
-            return await _appointments.Find(_ => true)
-                .SortByDescending(a => a.AppointmentDate)
-                .ToListAsync();
+            try
+            {
+                return await _appointments.Find(_ => true)
+                    .SortByDescending(a => a.AppointmentDate)
+                    .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error getting appointments: {ex.Message}");
+                return new List<Appointment>();
+            }
         }
 
         public async Task<Appointment> GetAppointmentByIdAsync(string id)
         {
-            return await _appointments.Find(a => a.Id == id).FirstOrDefaultAsync();
+            try
+            {
+                return await _appointments.Find(a => a.Id == id).FirstOrDefaultAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error getting appointment by id: {ex.Message}");
+                return null;
+            }
         }
 
         public async Task<List<Appointment>> GetAppointmentsByPatientIdAsync(string patientId)
         {
-            return await _appointments.Find(a => a.PatientId == patientId)
-                .SortByDescending(a => a.AppointmentDate)
-                .ToListAsync();
+            try
+            {
+                return await _appointments.Find(a => a.PatientId == patientId)
+                    .SortByDescending(a => a.AppointmentDate)
+                    .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error getting appointments by patient: {ex.Message}");
+                return new List<Appointment>();
+            }
         }
 
         public async Task<List<Appointment>> GetAppointmentsByDoctorIdAsync(string doctorId)
         {
-            return await _appointments.Find(a => a.DoctorId == doctorId)
-                .SortByDescending(a => a.AppointmentDate)
-                .ToListAsync();
+            try
+            {
+                return await _appointments.Find(a => a.DoctorId == doctorId)
+                    .SortByDescending(a => a.AppointmentDate)
+                    .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error getting appointments by doctor: {ex.Message}");
+                return new List<Appointment>();
+            }
         }
 
         public async Task CreateAppointmentAsync(Appointment appointment)
         {
-            await _appointments.InsertOneAsync(appointment);
+            try
+            {
+                await _appointments.InsertOneAsync(appointment);
+                Console.WriteLine($"Appointment created for patient: {appointment.PatientId}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error creating appointment: {ex.Message}");
+                throw;
+            }
         }
 
         public async Task UpdateAppointmentAsync(string id, Appointment appointment)
         {
-            appointment.UpdatedAt = DateTime.Now;
-            await _appointments.ReplaceOneAsync(a => a.Id == id, appointment);
+            try
+            {
+                appointment.UpdatedAt = DateTime.Now;
+                await _appointments.ReplaceOneAsync(a => a.Id == id, appointment);
+                Console.WriteLine($"Appointment updated: {id}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error updating appointment: {ex.Message}");
+                throw;
+            }
         }
 
         public async Task DeleteAppointmentAsync(string id)
         {
-            await _appointments.DeleteOneAsync(a => a.Id == id);
+            try
+            {
+                await _appointments.DeleteOneAsync(a => a.Id == id);
+                Console.WriteLine($"Appointment deleted: {id}");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error deleting appointment: {ex.Message}");
+                throw;
+            }
         }
     }
 }

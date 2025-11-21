@@ -8,7 +8,7 @@ namespace HealthcareAppointmentSystem.Models
     {
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; }
+        public string Id { get; set; } = ObjectId.GenerateNewId().ToString();
 
         [Required]
         public string Name { get; set; }

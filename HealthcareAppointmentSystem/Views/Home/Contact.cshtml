@@ -1,0 +1,264 @@
+﻿@{
+    ViewData["Title"] = "Contact Us";
+}
+
+<div class="container mt-5 mb-5">
+    <!-- Hero Section -->
+    <div class="row mb-5">
+        <div class="col-12 text-center">
+            <h1 class="display-4 mb-3">Contact Us</h1>
+            <p class="lead text-muted">We're here to help. Get in touch with us today!</p>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Contact Information -->
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow border-0">
+                <div class="card-body text-center p-4">
+                    <i class="bi bi-geo-alt-fill text-primary" style="font-size: 3rem;"></i>
+                    <h4 class="mt-3">Our Location</h4>
+                    <p class="text-muted">
+                        123, Galle Road,<br>
+                        Colombo 03,<br>
+                        Sri Lanka
+                    </p>
+                    <a href="https://maps.google.com" target="_blank" class="btn btn-outline-primary btn-sm">
+                        <i class="bi bi-map"></i> View on Map
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow border-0">
+                <div class="card-body text-center p-4">
+                    <i class="bi bi-telephone-fill text-success" style="font-size: 3rem;"></i>
+                    <h4 class="mt-3">Phone</h4>
+                    <p class="text-muted">
+                        <strong>Hotline:</strong><br>
+                        +94 11 234 5678<br>
+                        <br>
+                        <strong>Mobile:</strong><br>
+                        +94 77 123 4567
+                    </p>
+                    <small class="text-muted">Available 24/7</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4 mb-4">
+            <div class="card h-100 shadow border-0">
+                <div class="card-body text-center p-4">
+                    <i class="bi bi-envelope-fill text-info" style="font-size: 3rem;"></i>
+                    <h4 class="mt-3">Email</h4>
+                    <p class="text-muted">
+                        <strong>General Inquiries:</strong><br>
+                        info@medicare.lk<br>
+                        <br>
+                        <strong>Appointments:</strong><br>
+                        appointments@medicare.lk
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contact Form -->
+    <div class="row mt-5">
+        <div class="col-md-8 mx-auto">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h4 class="mb-0"><i class="bi bi-envelope"></i> Send Us a Message</h4>
+                </div>
+                <div class="card-body p-4">
+                    <form id="contactForm">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Full Name <span class="text-danger">*</span></label>
+                                <input type="text" class="form-control" placeholder="John Doe" required />
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Email Address <span class="text-danger">*</span></label>
+                                <input type="email" class="form-control" placeholder="john@example.com" required />
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Phone Number</label>
+                                <input type="tel" class="form-control" placeholder="+94 77 123 4567" />
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Subject <span class="text-danger">*</span></label>
+                                <select class="form-control" required>
+                                    <option value="">Select Subject</option>
+                                    <option value="general">General Inquiry</option>
+                                    <option value="appointment">Appointment Help</option>
+                                    <option value="technical">Technical Support</option>
+                                    <option value="feedback">Feedback</option>
+                                    <option value="complaint">Complaint</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Message <span class="text-danger">*</span></label>
+                            <textarea class="form-control" rows="6" placeholder="Write your message here..." required></textarea>
+                        </div>
+
+                        <div class="alert alert-info">
+                            <i class="bi bi-info-circle"></i>
+                            We typically respond within 24 hours during business days.
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-lg w-100">
+                            <i class="bi bi-send"></i> Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Office Hours -->
+    <div class="row mt-5">
+        <div class="col-md-8 mx-auto">
+            <div class="card shadow">
+                <div class="card-header bg-white">
+                    <h4 class="mb-0"><i class="bi bi-clock"></i> Office Hours</h4>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h5>Main Office</h5>
+                            <ul class="list-unstyled">
+                                <li class="mb-2">
+                                    <i class="bi bi-circle-fill text-success" style="font-size: 0.5rem;"></i>
+                                    <strong>Monday - Friday:</strong> 8:00 AM - 8:00 PM
+                                </li>
+                                <li class="mb-2">
+                                    <i class="bi bi-circle-fill text-success" style="font-size: 0.5rem;"></i>
+                                    <strong>Saturday:</strong> 9:00 AM - 5:00 PM
+                                </li>
+                                <li class="mb-2">
+                                    <i class="bi bi-circle-fill text-warning" style="font-size: 0.5rem;"></i>
+                                    <strong>Sunday:</strong> 10:00 AM - 2:00 PM
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="col-md-6">
+                            <h5>Emergency Services</h5>
+                            <p class="text-success">
+                                <i class="bi bi-check-circle-fill"></i> <strong>Available 24/7</strong>
+                            </p>
+                            <p class="text-muted">
+                                For medical emergencies, please call our emergency hotline or visit the nearest emergency department.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FAQ Section -->
+    <div class="row mt-5">
+        <div class="col-12">
+            <h2 class="text-center mb-4">Frequently Asked Questions</h2>
+        </div>
+
+        <div class="col-md-10 mx-auto">
+            <div class="accordion" id="faqAccordion">
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                            How do I book an appointment online?
+                        </button>
+                    </h2>
+                    <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            To book an appointment online, simply register or login to your patient account,
+                            search for a doctor by specialty or location, select a convenient time slot, and
+                            complete the payment. You'll receive instant confirmation.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                            Can I cancel or reschedule my appointment?
+                        </button>
+                    </h2>
+                    <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Yes, you can cancel or reschedule your appointment at least 24 hours before the scheduled time
+                            through your patient dashboard. Refunds for cancellations are processed within 7-10 business days.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                            What payment methods do you accept?
+                        </button>
+                    </h2>
+                    <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            We accept credit cards, debit cards, and online banking transfers. All payments are securely
+                            processed through our encrypted payment gateway.
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+                            How can I access my medical records?
+                        </button>
+                    </h2>
+                    <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            After completing a consultation, your medical records including consultation notes and prescriptions
+                            are available in your patient dashboard under the "Medical Records" section.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Map Section (Optional) -->
+    <div class="row mt-5">
+        <div class="col-12">
+            <div class="card shadow">
+                <div class="card-header bg-white">
+                    <h4 class="mb-0"><i class="bi bi-map"></i> Find Us</h4>
+                </div>
+                <div class="card-body p-0">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3960.798467937445!2d79.85162731477267!3d6.914707995006086!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae25963120b1509%3A0x2db2c18a68712863!2sGalle%20Road%2C%20Colombo!5e0!3m2!1sen!2slk!4v1234567890"
+                            width="100%"
+                            height="400"
+                            style="border:0;"
+                            allowfullscreen=""
+                            loading="lazy">
+                    </iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        document.getElementById('contactForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Thank you for your message! We will get back to you soon.');
+            this.reset();
+        });
+    </script>
+}
