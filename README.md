@@ -107,6 +107,7 @@ MongoDB Database
 git clone https://github.com/SarithaThemiyadasa/medicare-connect.git
 cd medicare-connect
 dotnet restore
+```
 Configuration
 
 Update appsettings.json:
@@ -186,4 +187,4 @@ This project is licensed under the MIT License.
 
 Made with ❤️ by Saritha Themiyadasa
 
-</div> ```
+</div> 
