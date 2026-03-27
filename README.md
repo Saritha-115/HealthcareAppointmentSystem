@@ -166,41 +166,57 @@ HealthcareAppointmentSystem/
 
 └── README.md
 
-🌐 Deployment
-Platforms
-Railway
-Microsoft Azure
-Steps
-Connect GitHub repository
-Configure environment variables
-Deploy
-Environment Variables
+## 🌐 Deployment
+
+### Platforms
+- Railway  
+- Microsoft Azure  
+
+### Steps
+1. Connect your GitHub repository  
+2. Configure environment variables  
+3. Deploy the application  
+
+### Environment Variables
+
+```env
 ConnectionStrings__MongoDbConnection=your_connection
 ConnectionStrings__DatabaseName=MediCareConnectDB
 ASPNETCORE_ENVIRONMENT=Production
-🚀 Future Enhancements
-Email & SMS notifications
-Video consultation integration
-Mobile application (iOS & Android)
-Multi-language support
-AI-based symptom checker
-📎 Project Links
-GitHub Repository: https://github.com/Saritha-115/HealthcareAppointmentSystem
-Live Demo: https://medicare-connect.up.railway.app
-📞 Contact
+```
+## 🚀 Future Enhancements
+- Email & SMS notifications  
+- Video consultation integration  
+- Mobile application (iOS & Android)  
+- Multi-language support  
+- AI-based symptom checker  
 
-Saritha Themiyadasa
+---
 
-GitHub: https://github.com/Saritha-115
-LinkedIn: https://linkedin.com/in/saritha-themiyadasa
-📄 License
+## 📎 Project Links
+- **GitHub Repository:** https://github.com/Saritha-115/HealthcareAppointmentSystem  
+- **Live Demo:** https://medicare-connect.up.railway.app  
 
-This project is licensed under the MIT License.
+---
+
+## 📞 Contact
+
+**Saritha Themiyadasa**
+
+- GitHub: https://github.com/Saritha-115  
+- LinkedIn: https://linkedin.com/in/saritha-themiyadasa  
+
+---
+
+## 📄 License
+This project is licensed under the **MIT License**.
+
+---
 
 <div align="center">
 
 ⭐ Star this repository if you find it helpful!
 
-Made with ❤️ by Saritha Themiyadasa
+Made with ❤️ by **Saritha Themiyadasa**
 
-</div> 
+</div>
