@@ -1,4 +1,4 @@
-# 🏥 MediCare Connect - Online Healthcare Appointment System
+# 🏥 MediCare Connect – Online Healthcare Appointment System
 
 ![MediCare Connect Banner](./wwwroot/images/healthcare-hero.jpg)
 
@@ -14,8 +14,8 @@
 ## 👨‍💻 Developer
 **Saritha Themiyadasa**  
 Diploma in Software Engineering  
-Module: CC6012 – Data and Web Application  
-Year: 2024  
+**Module:** CC6012 – Data and Web Application  
+**Year:** 2024  
 
 ---
 
@@ -26,7 +26,7 @@ It eliminates traditional inefficiencies such as long queues, manual scheduling,
 
 ---
 
-## ✨ Features
+## ✨ Key Features
 
 ### 👤 Patient Portal
 - User registration & authentication  
@@ -34,8 +34,10 @@ It eliminates traditional inefficiencies such as long queues, manual scheduling,
 - Real-time appointment booking  
 - Online payment system  
 - Medical records access  
-- Appointment management  
+- Appointment management (view, cancel, reschedule)  
 - Doctor ratings & feedback  
+
+---
 
 ### 👨‍⚕️ Doctor Dashboard
 - View and manage appointments  
@@ -43,6 +45,8 @@ It eliminates traditional inefficiencies such as long queues, manual scheduling,
 - Add consultation notes  
 - Manage patient records  
 - Update profile  
+
+---
 
 ### 👨‍💼 Admin Panel
 - Manage doctors and specialties  
@@ -52,7 +56,7 @@ It eliminates traditional inefficiencies such as long queues, manual scheduling,
 
 ---
 
-## 🛠️ Tech Stack
+## 🛠️ Technology Stack
 
 ### Backend
 - ASP.NET Core 6.0 MVC  
@@ -68,7 +72,7 @@ It eliminates traditional inefficiencies such as long queues, manual scheduling,
 - Bootstrap 5  
 - JavaScript  
 
-### Tools
+### Tools & Services
 - Visual Studio 2022  
 - Git & GitHub  
 - MongoDB Compass  
@@ -88,6 +92,7 @@ Business Logic Layer (Services & Repositories)
 Data Access Layer (MongoDB Driver)
 ↓
 MongoDB Database
+
 
 ---
 
@@ -112,47 +117,59 @@ Configuration
 
 Update appsettings.json:
 
+```bash
 {
   "ConnectionStrings": {
     "MongoDbConnection": "mongodb://localhost:27017",
     "DatabaseName": "MediCareConnectDB"
   }
 }
+```
 Run Application
+```bash
 dotnet build
 dotnet run
-
-Access:
-
-https://localhost:5001
+```
 📖 Usage
 Test Credentials
 
 Admin
-
+```bash
 admin@medicare.lk
 admin123
-
+```
 Doctor
-
+```bash
 nimal.perera@medicare.lk
 doctor123
-
+```
 Patient
-
+```bash
 kasun.r@email.com
 patient123
+```
+
 📁 Project Structure
-MediCareConnect/
+HealthcareAppointmentSystem/
+
 ├── Controllers/
+
 ├── Models/
+
 ├── Services/
+
 ├── Views/
+
 ├── wwwroot/
+
 ├── Database/
+
 ├── appsettings.json
+
 ├── Program.cs
+
 └── README.md
+
 🌐 Deployment
 Railway / Azure
 Connect GitHub repository
