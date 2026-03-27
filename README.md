@@ -1,7 +1,5 @@
 # 🏥 MediCare Connect – Online Healthcare Appointment System
 
-![MediCare Connect Banner](./wwwroot/images/healthcare-hero.jpg)
-
 [![ASP.NET Core](https://img.shields.io/badge/ASP.NET%20Core-6.0-512BD4?style=flat&logo=dotnet)](https://dotnet.microsoft.com/)
 [![MongoDB](https://img.shields.io/badge/MongoDB-6.0-47A248?style=flat&logo=mongodb&logoColor=white)](https://www.mongodb.com/)
 [![Bootstrap](https://img.shields.io/badge/Bootstrap-5.3-7952B3?style=flat&logo=bootstrap&logoColor=white)](https://getbootstrap.com/)
@@ -13,9 +11,7 @@
 
 ## 👨‍💻 Developer
 **Saritha Themiyadasa**  
-Diploma in Software Engineering  
-**Module:** CC6012 – Data and Web Application  
-**Year:** 2024  
+Diploma in Software Engineering   
 
 ---
 
@@ -171,9 +167,12 @@ HealthcareAppointmentSystem/
 └── README.md
 
 🌐 Deployment
-Railway / Azure
+Platforms
+Railway
+Microsoft Azure
+Steps
 Connect GitHub repository
-Add environment variables
+Configure environment variables
 Deploy
 Environment Variables
 ConnectionStrings__MongoDbConnection=your_connection
@@ -181,18 +180,18 @@ ConnectionStrings__DatabaseName=MediCareConnectDB
 ASPNETCORE_ENVIRONMENT=Production
 🚀 Future Enhancements
 Email & SMS notifications
-Video consultations
-Mobile app
+Video consultation integration
+Mobile application (iOS & Android)
 Multi-language support
 AI-based symptom checker
 📎 Project Links
-GitHub: https://github.com/SarithaThemiyadasa/medicare-connect
+GitHub Repository: https://github.com/Saritha-115/HealthcareAppointmentSystem
 Live Demo: https://medicare-connect.up.railway.app
 📞 Contact
 
 Saritha Themiyadasa
 
-GitHub: https://github.com/SarithaThemiyadasa
+GitHub: https://github.com/Saritha-115
 LinkedIn: https://linkedin.com/in/saritha-themiyadasa
 📄 License
 
