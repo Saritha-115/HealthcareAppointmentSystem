@@ -105,7 +105,7 @@ MongoDB Database
 ### Installation
 
 ```bash
-git clone https://github.com/SarithaThemiyadasa/medicare-connect.git
+git clone https://github.com/Saritha-115/HealthcareAppointmentSystem.git
 cd medicare-connect
 dotnet restore
 ```
